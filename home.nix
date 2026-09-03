@@ -75,6 +75,14 @@
     };
   };
 
+  programs.vscode = {
+    enable = true;
+  };
+
+  dconf.settings."org/gnome/desktop/interface" = {
+    monospace-font-name = "JetBrainsMono Nerd Font 11";
+  };
+
   programs.git = {
     enable = true;
     settings = {
