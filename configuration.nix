@@ -5,6 +5,11 @@
   ...
 }:
 
+let
+  # Lib `Blur.BlurEffect` com corner radius, usada pelo blur-my-shell para
+  # corrigir os cantos arredondados sob blur dinâmico.
+  gnome-rounded-blur = pkgs.callPackage ./modules/pkgs/gnome-rounded-blur.nix { };
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -94,6 +99,11 @@
     snapshot # câmera/webcam
     yelp # visualizador de ajuda
   ];
+
+  # A extensão blur-my-shell importa `gi://Blur` de dentro do gnome-shell. O
+  # wrapper do gnome-shell usa `--prefix` nessa variável, ou seja, preserva o que
+  # vier do ambiente — e o PAM a define antes da sessão gráfica subir.
+  environment.sessionVariables.GI_TYPELIB_PATH = "${gnome-rounded-blur}/lib/girepository-1.0";
 
   # Configure keymap in X11
   services.xserver.xkb = {

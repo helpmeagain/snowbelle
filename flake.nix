@@ -31,6 +31,7 @@
       userSettings = {
         vscodePkg = "vscodium"; # vscode/vscodium
         firefoxVerticalTabs = true;
+        environment = "gnome"; # gnome/plasma/hyprland
       };
 
     in
