@@ -7,11 +7,10 @@
 }:
 {
   imports = [
-    ./modules/user/terminal.nix
-    ./modules/user/git.nix
-    ./modules/user/vscode.nix
-    ./modules/user/gnome.nix
-    ./modules/user/firefox.nix
+    ../user/terminal.nix
+    ../user/git.nix
+    ../user/vscode.nix
+    ../user/firefox.nix
   ];
 
   home.username = "help";
