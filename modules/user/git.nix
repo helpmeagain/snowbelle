@@ -1,14 +1,14 @@
-{ config, pkgs, ... }: 
+{ config, lib, pkgs, ... }:
 {
   programs.git = {
-    enable = true;
+    enable = lib.mkDefault true;
     settings = {
       user = {
-        name = "helpmeagain";
-        email = "57302703+helpmeagain@users.noreply.github.com";
+        name = lib.mkDefault "helpmeagain";
+        email = lib.mkDefault "57302703+helpmeagain@users.noreply.github.com";
       };
-      init.defaultBranch = "main";
-      pull.rebase = false;
+      init.defaultBranch = lib.mkDefault "main";
+      pull.rebase = lib.mkDefault false;
     };
   };
 }

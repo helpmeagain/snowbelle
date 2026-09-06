@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   programs.zsh = {
-    enable = true;
+    enable = lib.mkDefault true;
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
@@ -19,7 +19,7 @@
   };
 
   programs.starship = {
-    enable = true;
+    enable = lib.mkDefault true;
     settings = {
       "$schema" = "https://starship.rs/config-schema.json";
 
