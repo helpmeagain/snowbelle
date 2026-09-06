@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   pkgs-unstable,
   userSettings,
@@ -13,67 +14,78 @@
     ../user/firefox.nix
   ];
 
-  home.username = "help";
-  home.homeDirectory = "/home/help";
-
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
-  home.stateVersion = "26.05"; # Please read the comment before changing.
-
-  home.packages =
-    (with pkgs; [
-      # Cryptography
-      veracrypt
-      cryptomator
-
-      # Auth
-      bitwarden-desktop
-      ente-auth
-    ])
-    ++ (with pkgs-unstable; [
-    ]);
-
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
+  # Pra adicionar ou deletar pkgs no host, bastando adicionar no home.nix do host
+  options.dotfiles.excludePackages = lib.mkOption {
+    type = lib.types.listOf lib.types.package;
+    default = [ ];
+    description = "Pacotes do conjunto padrão abaixo a não instalar neste host.";
   };
 
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. These will be explicitly sourced when using a
-  # shell provided by Home Manager. If you don't want to manage your shell
-  # through Home Manager then you have to manually source 'hm-session-vars.sh'
-  # located at either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/help/etc/profile.d/hm-session-vars.sh
-  #
+  config = {
+    home.username = "help";
+    home.homeDirectory = "/home/help";
 
-  home.sessionVariables = {
-    # EDITOR = "emacs";
+    # This value determines the Home Manager release that your configuration is
+    # compatible with. This helps avoid breakage when a new Home Manager release
+    # introduces backwards incompatible changes.
+    #
+    # You should not change this value, even if you update Home Manager. If you do
+    # want to update the value, then make sure to first check the Home Manager
+    # release notes.
+    home.stateVersion = "26.05"; # Please read the comment before changing.
+
+    home.packages = lib.subtractLists config.dotfiles.excludePackages (
+      (with pkgs; [
+        # Cryptography
+        veracrypt
+        cryptomator
+        kdePackages.kleopatra
+
+        # Auth
+        bitwarden-desktop
+        ente-auth
+      ])
+      ++ (with pkgs-unstable; [
+      ])
+    );
+
+    home.file = {
+      # # Building this configuration will create a copy of 'dotfiles/screenrc' in
+      # # the Nix store. Activating the configuration will then make '~/.screenrc' a
+      # # symlink to the Nix store copy.
+      # ".screenrc".source = dotfiles/screenrc;
+
+      # # You can also set the file content immediately.
+      # ".gradle/gradle.properties".text = ''
+      #   org.gradle.console=verbose
+      #   org.gradle.daemon.idletimeout=3600000
+      # '';
+    };
+
+    # Home Manager can also manage your environment variables through
+    # 'home.sessionVariables'. These will be explicitly sourced when using a
+    # shell provided by Home Manager. If you don't want to manage your shell
+    # through Home Manager then you have to manually source 'hm-session-vars.sh'
+    # located at either
+    #
+    #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
+    #
+    # or
+    #
+    #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
+    #
+    # or
+    #
+    #  /etc/profiles/per-user/help/etc/profile.d/hm-session-vars.sh
+    #
+
+    home.sessionVariables = {
+      # EDITOR = "emacs";
+    };
+
+    programs.claude-code.enable = true;
+
+    # Let Home Manager install and manage itself.
+    programs.home-manager.enable = true;
   };
-
-  programs.claude-code.enable = true;
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 }

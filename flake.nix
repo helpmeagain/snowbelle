@@ -28,8 +28,7 @@
 
       # desktop: "gnome" | "plasma" | "hyprland" | "none"
       # nixos:   true  -> também gera nixosConfigurations.<nome>
-      #          false -> host não-NixOS (Nix em cima de Arch/Ubuntu, por
-      #                   exemplo), só gera home-manager standalone
+      #          false -> host não-NixOS (Nix em cima de Arch/Ubuntu, por exemplo), só gera home-manager standalone
       hosts = {
         notebook = {
           system = "x86_64-linux";
@@ -77,7 +76,8 @@
           modules = [
             ./modules/nixos/common.nix
             ./hosts/${name}/default.nix
-          ] ++ desktopModules.${host.desktop}.nixos;
+          ]
+          ++ desktopModules.${host.desktop}.nixos;
           specialArgs = {
             pkgs-unstable = pkgsUnstableBySystem.${host.system};
           };
@@ -89,7 +89,10 @@
           pkgs = pkgsBySystem.${host.system};
           modules = [
             ./modules/home/common.nix
-          ] ++ desktopModules.${host.desktop}.home;
+          ]
+          ++ desktopModules.${host.desktop}.home
+          # override opcional por host, só entra se o arquivo existir
+          ++ lib.optional (builtins.pathExists ./hosts/${name}/home.nix) ./hosts/${name}/home.nix;
           extraSpecialArgs = {
             pkgs-unstable = pkgsUnstableBySystem.${host.system};
             inherit userSettings;
