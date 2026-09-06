@@ -1,18 +1,15 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
-  
-  nix.settings.experimental-features = [ "nix-command" "flakes"];
-  # Bootloader: GRUB (EFI). LUKS unlock is already declared in
-  # hardware-configuration.nix, no need to repeat it here.
+  imports = [
+    ./hardware-configuration.nix
+  ];
+
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
   boot = {
     loader = {
       systemd-boot.enable = false;
@@ -32,7 +29,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "nixos";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -44,8 +41,6 @@
 
   # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "pt_BR.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -60,9 +55,40 @@
     LC_TIME = "pt_BR.UTF-8";
   };
 
-  # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
+  environment.gnome.excludePackages = with pkgs; [
+    gnome-tour
+    gnome-user-docs
+    # gnome-bluetooth      # applet de bluetooth (não remova se usar bluetooth pela GUI)
+    # gnome-color-manager  # calibração de cor de monitor
+
+    # baobab               # analisador de uso de disco
+    decibels # player de audiobooks
+    epiphany # navegador GNOME Web
+    # gnome-text-editor    # editor de texto (Gedit novo)
+    # gnome-calculator
+    # gnome-calendar
+    # gnome-characters     # mapa de caracteres/emojis
+    # gnome-clocks
+    # gnome-console        # kgx (você já usa via atalho <Super>t)
+    gnome-contacts
+    gnome-font-viewer
+    # gnome-logs           # visualizador de logs (journalctl com GUI)
+    gnome-maps
+    gnome-music
+    # gnome-system-monitor
+    # gnome-tecla          # mostra teclas pressionadas (debug de teclado)
+    gnome-weather
+    # loupe                # visualizador de imagens
+    # nautilus             # gerenciador de arquivos (você usa via <Super>e, não remova)
+    # papers               # visualizador de PDF (antigo Evince)
+    gnome-connections # cliente RDP/VNC
+    # showtime             # player de vídeo
+    simple-scan # digitalização
+    snapshot # câmera/webcam
+    yelp # visualizador de ajuda
+  ];
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -75,10 +101,11 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  # services.system-config-printer.enable = false; # App do DE para configurar a impressora
 
   # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
+  services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -98,9 +125,12 @@
   users.users."help" = {
     isNormalUser = true;
     description = "help";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
@@ -108,21 +138,21 @@
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
 
-  # Install firefox.
-  programs.firefox.enable = true;
+  # Allow dynamically linked "generic Linux" binaries to run (e.g. VS Code
+  # extensions that ship prebuilt native binaries, like Claude Code).
+  # See: https://nix.dev/permalink/stub-ld
+  programs.nix-ld.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # Nerd Fonts (glyphs used by starship, etc.)
+  documentation.nixos.enable = false;
+
   fonts.packages = with pkgs; [ nerd-fonts.jetbrains-mono ];
 
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-  #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-     wget
-     git
+    #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -133,22 +163,17 @@
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      PermitRootLogin = "no";
+    };
+  };
 
-  # Enable the OpenSSH daemon.
-services.openssh = {
-	enable = true;
-	settings = {
-		PasswordAuthentication = false;
-		PermitRootLogin = "no";
-	};
-};
-
-  # Open ports in the firewall.
-networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.allowedTCPPorts = [ 22 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  # networking.firewall.enable = false; # Disable the firewall altogether.
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

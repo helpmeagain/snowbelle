@@ -1,4 +1,4 @@
-{ config, pkgs, ...}:
+{ config, pkgs, ... }:
 {
   programs.zsh = {
     enable = true;
@@ -14,6 +14,7 @@
       ll = "ls -la";
       ".." = "cd ..";
       update = "sudo nixos-rebuild switch --flake $HOME/.dotfiles";
+      hupdate = "home-manager switch --flake $HOME/.dotfiles";
     };
   };
 
