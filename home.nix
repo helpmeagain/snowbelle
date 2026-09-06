@@ -2,6 +2,7 @@
   config,
   pkgs,
   pkgs-unstable,
+  userSettings,
   ...
 }:
 {

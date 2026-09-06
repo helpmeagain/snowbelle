@@ -1,17 +1,32 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  userSettings,
+  ...
+}:
 let
-  editor = "vscodium";
-  #editor = "vscode";
+  vscodePkg = userSettings.vscodePkg;
+  isProprietary = vscodePkg == "vscode";
 in
 {
-  programs.${editor} = {
+  programs.${vscodePkg} = {
     enable = true;
     profiles.default = {
-      extensions = with pkgs.vscode-extensions; [
-        jnoortheen.nix-ide
-        anthropic.claude-code
-        pkief.material-icon-theme
-      ];
+      extensions =
+        with pkgs.vscode-extensions;
+        [
+          jnoortheen.nix-ide
+          anthropic.claude-code
+          pkief.material-icon-theme
+          ms-python.python
+          ms-python.vscode-python-envs
+          ms-python.debugpy
+          ms-vscode.cpptools
+        ]
+        ++ lib.optionals isProprietary [
+
+        ];
       userSettings = {
         "nix.enableLanguageServer" = true;
         "nix.serverPath" = "${pkgs.nil}/bin/nil";
@@ -28,7 +43,6 @@ in
         "window.titleBarStyle" = "custom";
         "telemetry.telemetryLevel" = "off";
         "editor.fontLigatures" = true;
-        "symbols.hidesExplorerArrows" = false;
         "chat.disableAIFeatures" = true;
         "chat.agent.enabled" = false;
       };

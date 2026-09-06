@@ -1,4 +1,13 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  userSettings,
+  ...
+}:
+let
+  verticalTabs = userSettings.firefoxVerticalTabs or false;
+in
 {
   programs.firefox = {
     enable = true;
@@ -43,6 +52,11 @@
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/multi-account-containers/latest.xpi";
           installation_mode = "normal_installed";
         };
+        # Dicionário Português (Brasil)
+        "pt-BR@dictionaries.addons.mozilla.org" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/corretor/latest.xpi";
+          installation_mode = "normal_installed";
+        };
       };
     };
 
@@ -56,6 +70,27 @@
       };
 
       settings = {
+        "sidebar.revamp" = verticalTabs;
+        "sidebar.verticalTabs" = verticalTabs;
+        "sidebar.main.tools" = "";
+
+        "browser.ai.control.default" = "blocked";
+        "browser.ai.control.translations" = "blocked";
+        "browser.ai.control.pdfjsAltText" = "blocked";
+        "browser.ai.control.smartTabGroups" = "blocked";
+        "browser.ai.control.linkPreviewKeyPoints" = "blocked";
+        "browser.ai.control.sidebarChatbot" = "blocked";
+        "browser.ai.control.smartWindow" = "blocked";
+        "extensions.ml.enabled" = false;
+
+        "browser.newtabpage.enabled" = false;
+        "browser.startup.page" = 1;
+        "browser.startup.homepage" = "about:newtab";
+
+        "spellchecker.dictionary" = "en-US,pt-BR";
+
+        # Barra de favoritos sempre visível.
+        "browser.toolbars.bookmarks.visibility" = "always";
         "browser.uiCustomization.state" = builtins.toJSON {
           placements = {
             "widget-overflow-fixed-list" = [ ];
@@ -80,11 +115,11 @@
               "unified-extensions-button"
             ];
             "toolbar-menubar" = [ "menubar-items" ];
-            "TabsToolbar" = [
+            "TabsToolbar" = lib.optionals (!verticalTabs) [
               "tabbrowser-tabs"
               "new-tab-button"
             ];
-            "vertical-tabs" = [ ];
+            "vertical-tabs" = lib.optionals verticalTabs [ "tabbrowser-tabs" ];
             "PersonalToolbar" = [ "personal-bookmarks" ];
           };
           seen = [
@@ -111,6 +146,19 @@
           newElementCount = 5;
         };
       };
+    };
+  };
+
+  # Atalhos
+  home.file.".config/mozilla/firefox/default/customKeys.json" = {
+    force = true;
+    text = builtins.toJSON {
+      # Expandir/recolher o sidebar
+      toggleSidebarKb = {
+        modifiers = "control,shift";
+        key = "X";
+      };
+      key_switchTextDirection = { };
     };
   };
 }

@@ -28,6 +28,11 @@
       };
       pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
 
+      userSettings = {
+        vscodePkg = "vscodium"; # vscode/vscodium
+        firefoxVerticalTabs = true;
+      };
+
     in
     {
       nixosConfigurations = {
@@ -46,6 +51,7 @@
           modules = [ ./home.nix ];
           extraSpecialArgs = {
             inherit pkgs-unstable;
+            inherit userSettings;
           };
         };
       };
