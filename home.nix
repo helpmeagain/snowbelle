@@ -10,9 +10,9 @@
     ./modules/user/git.nix
     ./modules/user/vscode.nix
     ./modules/user/gnome.nix
+    ./modules/user/firefox.nix
   ];
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
+
   home.username = "help";
   home.homeDirectory = "/home/help";
 
