@@ -11,7 +11,7 @@ let
 in
 {
   programs.${vscodePkg} = {
-    enable = true;
+    enable = lib.mkDefault true;
     profiles.default = {
       extensions =
         with pkgs.vscode-extensions;

@@ -10,7 +10,7 @@ let
 in
 {
   programs.firefox = {
-    enable = true;
+    enable = lib.mkDefault true;
     languagePacks = [
       "pt-BR"
       "en-US"
