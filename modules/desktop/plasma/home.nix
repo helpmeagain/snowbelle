@@ -9,6 +9,162 @@
 
 let
   wallpaper = "${config.home.homeDirectory}/${userSettings.wallpaper}";
+
+  # Estilo dos painéis, escolhido em flake.nix (userSettings.plasmaPanelStyle):
+  #   "gnomeLike"   -> barra fina no topo + dock flutuante embaixo
+  #   "windowsLike" -> barra única embaixo (iniciar + tarefas + bandeja + relógio)
+  panelStyle = userSettings.plasmaPanelStyle or "gnomeLike";
+  windowsLike = panelStyle == "windowsLike";
+
+  # --- Widgets compartilhados pelos dois estilos ---
+  kickoffWidget = {
+    kickoff = {
+      icon = if hostIsNixos then "nix-snowflake-white" else null;
+      showActionButtonCaptions = false;
+      settings.General.highlightNewlyInstalledApps = false;
+    };
+  };
+
+  iconTasksWidget = {
+    iconTasks = {
+      launchers = [
+        "preferred://browser"
+        "preferred://filemanager"
+        "applications:org.kde.konsole.desktop"
+      ];
+    };
+  };
+
+  digitalClockWidget = {
+    digitalClock = {
+      # No windows-like só a hora aparece (sem data ao lado); no gnome-like
+      # a data continua no formato custom, ao lado da hora.
+      date = {
+        enable = !windowsLike;
+        format.custom = "ddd d |";
+        position = "besideTime";
+      };
+      font = {
+        family = "JetBrainsMono Nerd Font Mono";
+        size = 14;
+        weight = 400;
+        style = "Regular";
+      };
+    };
+  };
+
+  systemTrayWidget = {
+    systemTray = {
+      icons.scaleToFit = true;
+      items = {
+        extra = [
+          "org.kde.plasma.vault"
+          "org.kde.plasma.cameraindicator"
+          "org.kde.plasma.devicenotifier"
+          "org.kde.plasma.manage-inputmethod"
+          "org.kde.plasma.notifications"
+          "org.kde.plasma.keyboardlayout"
+          "org.kde.plasma.printmanager"
+          "org.kde.plasma.keyboardindicator"
+          "org.kde.plasma.weather"
+          "org.kde.kscreen"
+          "org.kde.plasma.clipboard"
+          "org.kde.plasma.brightness"
+          "org.kde.plasma.networkmanagement"
+          "org.kde.plasma.bluetooth"
+          "org.kde.plasma.volume"
+          "org.kde.plasma.mediacontroller"
+          "org.kde.plasma.battery"
+          "org.kde.kdeconnect"
+        ];
+        hidden = [
+          "org.kde.plasma.clipboard"
+          "org.kde.plasma.brightness"
+          "org.kde.plasma.networkmanagement"
+          "org.kde.plasma.bluetooth"
+          "org.kde.plasma.volume"
+          "org.kde.plasma.mediacontroller"
+          "org.kde.plasma.battery"
+          "Notificador do Discover_org.kde.DiscoverNotifier"
+          "Bitwarden_status_icon_1"
+        ];
+      };
+    };
+  };
+
+  # --- Layouts de painel ---
+  panelsByStyle = {
+    # Barra de status no topo (relógio central, bandeja à direita) e dock
+    # flutuante embaixo, só com os lançadores/janelas.
+    gnomeLike = [
+      {
+        location = "top";
+        height = 25;
+        floating = false;
+        opacity = "opaque";
+        screen = "all";
+        widgets = [
+          kickoffWidget
+          {
+            pager = {
+              general = {
+                displayedText = "desktopNumber";
+                showOnlyCurrentScreen = true;
+                showWindowOutlines = false;
+              };
+            };
+          }
+          "org.kde.plasma.panelspacer"
+          digitalClockWidget
+          "org.kde.plasma.panelspacer"
+          "org.kde.plasma.marginsseparator"
+          systemTrayWidget
+          "org.kde.plasma.networkmanagement"
+          "org.kde.plasma.bluetooth"
+          "org.kde.plasma.volume"
+          { battery.showPercentage = true; }
+        ];
+      }
+
+      {
+        location = "bottom";
+        height = 55;
+        floating = true;
+        lengthMode = "fit";
+        hiding = "dodgewindows";
+        opacity = "translucent";
+        screen = "all";
+        widgets = [ iconTasksWidget ];
+      }
+    ];
+
+    # Barra única embaixo: menu iniciar à esquerda, barra de tarefas, e
+    # bandeja + relógio à direita.
+    windowsLike = [
+      {
+        location = "bottom";
+        height = 44;
+        floating = false;
+        opacity = "opaque";
+        screen = "all";
+        widgets = [
+          kickoffWidget
+          iconTasksWidget
+          "org.kde.plasma.marginsseparator"
+          systemTrayWidget
+          "org.kde.plasma.networkmanagement"
+          "org.kde.plasma.bluetooth"
+          "org.kde.plasma.volume"
+          { battery.showPercentage = true; }
+          digitalClockWidget
+        ];
+      }
+    ];
+  };
+
+  panels =
+    panelsByStyle.${panelStyle}
+      or (throw "userSettings.plasmaPanelStyle inválido: \"${panelStyle}\" (use \"gnomeLike\" ou \"windowsLike\")");
 in
 {
 
@@ -111,120 +267,12 @@ in
     };
 
     # === Painéis ===
-    panels = [
-      # Barra superior
-      {
-        location = "top";
-        height = 25;
-        floating = false;
-        opacity = "opaque";
-        screen = "all";
-        widgets = [
-          {
-            kickoff = {
-              icon = if hostIsNixos then "nix-snowflake-white" else null;
-              showActionButtonCaptions = false;
-              settings.General.highlightNewlyInstalledApps = false;
-            };
-          }
-          {
-            pager = {
-              general = {
-                displayedText = "desktopNumber";
-                showOnlyCurrentScreen = true;
-                showWindowOutlines = false;
-              };
-            };
-          }
-          "org.kde.plasma.panelspacer"
-          {
-            digitalClock = {
-              date = {
-                enable = true;
-                format.custom = "ddd d |";
-                position = "besideTime";
-              };
-              font = {
-                family = "JetBrainsMono Nerd Font Mono";
-                size = 14;
-                weight = 400;
-                style = "Regular";
-              };
-            };
-          }
-          "org.kde.plasma.panelspacer"
-          {
-            systemTray = {
-              icons.scaleToFit = true;
-              items = {
-                extra = [
-                  "org.kde.plasma.vault"
-                  "org.kde.plasma.cameraindicator"
-                  "org.kde.plasma.devicenotifier"
-                  "org.kde.plasma.manage-inputmethod"
-                  "org.kde.plasma.notifications"
-                  "org.kde.plasma.keyboardlayout"
-                  "org.kde.plasma.printmanager"
-                  "org.kde.plasma.keyboardindicator"
-                  "org.kde.plasma.weather"
-                  "org.kde.kscreen"
-                  "org.kde.plasma.clipboard"
-                  "org.kde.plasma.brightness"
-                  "org.kde.plasma.networkmanagement"
-                  "org.kde.plasma.bluetooth"
-                  "org.kde.plasma.volume"
-                  "org.kde.plasma.mediacontroller"
-                  "org.kde.plasma.battery"
-                  "org.kde.kdeconnect"
-                ];
-                hidden = [
-                  "org.kde.plasma.clipboard"
-                  "org.kde.plasma.brightness"
-                  "org.kde.plasma.networkmanagement"
-                  "org.kde.plasma.bluetooth"
-                  "org.kde.plasma.volume"
-                  "org.kde.plasma.mediacontroller"
-                  "org.kde.plasma.battery"
-                  "Notificador do Discover_org.kde.DiscoverNotifier"
-                ];
-              };
-            };
-          }
-          "org.kde.plasma.marginsseparator"
-          "org.kde.plasma.networkmanagement"
-          "org.kde.plasma.bluetooth"
-          "org.kde.plasma.volume"
-          { battery.showPercentage = true; }
-        ];
-      }
-
-      # Barra inferior
-      {
-        location = "bottom";
-        height = 55;
-        floating = true;
-        lengthMode = "fit";
-        hiding = "dodgewindows";
-        opacity = "translucent";
-        screen = "all";
-        widgets = [
-          {
-            iconTasks = {
-              launchers = [
-                "preferred://browser"
-                "preferred://filemanager"
-                "applications:org.kde.konsole.desktop"
-              ];
-            };
-          }
-        ];
-      }
-    ];
+    inherit panels;
 
     # === Atalhos ===
     shortcuts = {
       kwin = {
-        "Overview" = "Meta";
+        "Overview" = if windowsLike then "Meta+W" else "Meta";
         "Edit Tiles" = "Meta+Shift+T";
         "Window Close" = [
           "Alt+F4"
@@ -296,7 +344,14 @@ in
       };
 
       plasmashell = {
-        "activate application launcher" = "Alt+F1";
+        "activate application launcher" =
+          if windowsLike then
+            [
+              "Alt+F1"
+              "Meta"
+            ]
+          else
+            "Alt+F1";
         "next activity" = "Meta+A";
         "previous activity" = "Meta+Shift+A";
 
@@ -480,17 +535,29 @@ in
   # derrubar a ativação do home-manager.
   #
   # O `PATH` dentro do activation-script do home-manager é fixo (só as
-  # ferramentas que ele mesmo usa) e não inclui `qdbus` nem `systemctl`,
-  # mesmo eles estando disponíveis no shell interativo via
+  # ferramentas que ele mesmo usa) e não inclui `qdbus`, os `plasma-apply-*`
+  # nem `systemctl`, mesmo eles estando disponíveis no shell interativo via
   # /run/current-system/sw/bin. Sem `qdbus` os desktop-scripts falham
   # silenciosamente com "comando não encontrado" -- e como o script de
   # painéis primeiro APAGA o plasma-org.kde.plasma.desktop-appletsrc antes de
   # tentar recriá-lo via qdbus, uma falha aqui deixa esse arquivo ausente até
-  # o próximo login. Sem `systemctl`, o restart do plasmashell no final do
-  # run_all.sh (disparado sempre que os painéis usam `screen` != null) também
-  # falha.
+  # o próximo login. Sem os `plasma-apply-*`, o script de temas não aplica
+  # tema/cursor/esquema de cores. Sem `systemctl`, o restart do plasmashell
+  # no final do run_all.sh (disparado sempre que os painéis usam
+  # `screen` != null) também falha.
+  #
+  # Cada desktop-script guarda o sha256 do .js que aplicou por último em
+  # `last_run_<script>`, e só reexecuta quando esse hash muda. Isso quer dizer
+  # que mudanças feitas na mão pela GUI do Plasma (arrastar um painel, trocar
+  # widgets) NÃO são desfeitas no `hupdate` seguinte: pro plasma-manager o
+  # ".js desejado" continua igual ao que ele já aplicou, então ele pula. Para
+  # forçar a reaplicação (redesenhar os painéis a partir do zero), apague os
+  # marcadores antes: `PLASMA_FORCE_APPLY=1 hupdate`.
   home.activation.plasmaManagerRunNow = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-    PATH="${pkgs.kdePackages.qttools}/bin:${pkgs.systemd}/bin:$PATH" run ${config.xdg.dataHome}/plasma-manager/run_all.sh
+    if [ -n "''${PLASMA_FORCE_APPLY:-}" ]; then
+      run rm -f ${config.xdg.dataHome}/plasma-manager/last_run_*
+    fi
+    PATH="${pkgs.kdePackages.qttools}/bin:${pkgs.kdePackages.plasma-workspace}/bin:${pkgs.systemd}/bin:$PATH" run ${config.xdg.dataHome}/plasma-manager/run_all.sh
   '';
 
   # === Konsole ===

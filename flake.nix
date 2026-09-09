@@ -32,6 +32,7 @@
       userSettings = {
         vscodePkg = "vscodium"; # vscode/vscodium
         wallpaper = "Imagens/Wallpapers/X.jpg";
+        plasmaPanelStyle = "gnomeLike"; # "gnomeLike" | "windowsLike"
         firefoxVerticalTabs = true;
       };
 
