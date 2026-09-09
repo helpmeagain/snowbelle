@@ -1,4 +1,10 @@
-{ config, pkgs, pkgs-unstable, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgs-unstable,
+  ...
+}:
 
 {
   nix.settings.experimental-features = [
@@ -33,8 +39,8 @@
 
   # Configure keymap in X11
   services.xserver.xkb = {
-    layout = "br";
-    variant = "";
+    layout = lib.mkDefault "br";
+    variant = lib.mkDefault "";
   };
 
   # Configure console keymap
@@ -69,6 +75,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "docker"
     ];
     packages = with pkgs; [
       #  thunderbird

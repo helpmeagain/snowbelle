@@ -12,6 +12,7 @@
     ../user/git.nix
     ../user/vscode.nix
     ../user/firefox.nix
+    ../user/keepass.nix
   ];
 
   # Pra adicionar ou deletar pkgs no host, bastando adicionar no home.nix do host

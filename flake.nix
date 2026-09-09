@@ -45,6 +45,11 @@
           desktop = "plasma";
           nixos = true;
         };
+        thinkpad = {
+          system = "x86_64-linux";
+          desktop = "plasma";
+          nixos = true;
+        };
         # vm-dev      = { system = "x86_64-linux"; desktop = "none";  nixos = true;  };
         # arch-laptop = { system = "x86_64-linux"; desktop = "gnome"; nixos = false; };
       };
