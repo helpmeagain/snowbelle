@@ -4,9 +4,16 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
   };
 
@@ -16,6 +23,7 @@
       nixpkgs,
       nixpkgs-unstable,
       home-manager,
+      plasma-manager,
       ...
     }:
     let
@@ -23,6 +31,8 @@
 
       userSettings = {
         vscodePkg = "vscodium"; # vscode/vscodium
+        wallpaper = "Imagens/Wallpapers/X.jpg";
+        plasmaPanelStyle = "gnomeLike"; # "gnomeLike" | "windowsLike"
         firefoxVerticalTabs = true;
       };
 
@@ -32,7 +42,7 @@
       hosts = {
         notebook = {
           system = "x86_64-linux";
-          desktop = "gnome";
+          desktop = "plasma";
           nixos = true;
         };
         # vm-dev      = { system = "x86_64-linux"; desktop = "none";  nixos = true;  };
@@ -61,7 +71,10 @@
         };
         plasma = {
           nixos = [ ./modules/desktop/plasma/nixos.nix ];
-          home = [ ./modules/desktop/plasma/home.nix ];
+          home = [
+            plasma-manager.homeModules.plasma-manager
+            ./modules/desktop/plasma/home.nix
+          ];
         };
         hyprland = {
           nixos = [ ./modules/desktop/hyprland/nixos.nix ];
@@ -96,6 +109,7 @@
           extraSpecialArgs = {
             pkgs-unstable = pkgsUnstableBySystem.${host.system};
             inherit userSettings;
+            hostIsNixos = host.nixos;
           };
         };
 
