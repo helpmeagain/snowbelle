@@ -165,6 +165,9 @@ let
   panels =
     panelsByStyle.${panelStyle}
       or (throw "userSettings.plasmaPanelStyle inválido: \"${panelStyle}\" (use \"gnomeLike\" ou \"windowsLike\")");
+
+  vscodeBin = if userSettings.vscodePkg == "vscode" then "code" else "codium";
+  vscodeIcon = if userSettings.vscodePkg == "vscode" then "vscode" else "vscodium";
 in
 {
 
@@ -177,6 +180,20 @@ in
 
   xdg.dataFile."color-schemes/BreezeDarkCustom.colors".source =
     ./color-schemes/BreezeDarkCustom.colors;
+
+  xdg.dataFile."kio/servicemenus/open-with-vscode.desktop".text = ''
+    [Desktop Entry]
+    Type=Service
+    X-KDE-ServiceTypes=KonqPopupMenu/Plugin
+    MimeType=all/allfiles;inode/directory;
+    Actions=openWithVSCode;
+    X-KDE-Priority=TopLevel
+
+    [Desktop Action openWithVSCode]
+    Name=Abrir com VSCode
+    Icon=${vscodeIcon}
+    Exec=${vscodeBin} %U
+  '';
 
   programs.plasma = {
     enable = true;

@@ -25,9 +25,16 @@
     initContent = ''
       if [[ -z "$TMUX" && $- == *i* ]]; then
         if [[ -n "$VSCODE_INJECTION" || "$TERM_PROGRAM" == "vscode" ]]; then
-          exec tmux new-session -A -s vscode
+          tmux_session="vscode"
         else
-          exec tmux new-session -A -s main
+          tmux_session="main"
+        fi
+
+        if tmux has-session -t "$tmux_session" 2>/dev/null; then
+          tmux_window_id=$(tmux new-window -Pt "$tmux_session" -c "$PWD" -F '#{window_id}')
+          exec tmux attach-session -t "$tmux_session:$tmux_window_id"
+        else
+          exec tmux new-session -s "$tmux_session" -c "$PWD"
         fi
       fi
     '';
