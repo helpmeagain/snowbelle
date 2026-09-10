@@ -582,6 +582,8 @@ in
     enable = true;
     defaultProfile = "Perfil 1";
 
+    customColorSchemes.DarkPastels = ./color-schemes/DarkPastels.colorscheme;
+
     profiles."Perfil 1" = {
       name = "Perfil 1";
       colorScheme = "DarkPastels";
