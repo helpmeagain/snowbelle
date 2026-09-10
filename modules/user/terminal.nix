@@ -5,6 +5,10 @@
   ...
 }:
 {
+  programs.bash = {
+    enable = lib.mkDefault true;
+  };
+
   programs.zsh = {
     enable = lib.mkDefault true;
     enableCompletion = true;
@@ -31,8 +35,12 @@
         fi
 
         if tmux has-session -t "$tmux_session" 2>/dev/null; then
-          tmux_window_id=$(tmux new-window -Pt "$tmux_session" -c "$PWD" -F '#{window_id}')
-          exec tmux attach-session -t "$tmux_session:$tmux_window_id"
+          if [[ "$tmux_session" == "main" && "$PWD" == "$HOME" ]]; then
+            exec tmux attach-session -t "$tmux_session"
+          else
+            tmux_window_id=$(tmux new-window -Pt "$tmux_session" -c "$PWD" -F '#{window_id}')
+            exec tmux attach-session -t "$tmux_session:$tmux_window_id"
+          fi
         else
           exec tmux new-session -s "$tmux_session" -c "$PWD"
         fi
@@ -143,29 +151,29 @@
     settings = {
       "$schema" = "https://starship.rs/config-schema.json";
 
-      add_newline = false;
+      add_newline = true;
 
-      format = "$username$os$hostname[](fg:#c099ff bg:#585b70)$directory[](fg:#585b70 bg:#45475a)$git_branch$git_status[](fg:#45475a bg:#313244)$nodejs$rust$golang$php[](fg:#313244 bg:#1e1e2e)$time[](fg:#1e1e2e) ";
+      format = "$os$nix_shell$username$hostname[ ](bg:#c099ff)[](fg:#c099ff bg:#585b70)$directory[](fg:#585b70 bg:#45475a)$git_branch$git_status[](fg:#45475a bg:#313244)$nodejs$rust$golang$php[](fg:#313244 bg:#1e1e2e)$time[](fg:#1e1e2e) ";
 
       username = {
         show_always = true;
         style_user = "bg:#c099ff fg:#1e1e2e";
         style_root = "bg:#f38ba8 fg:#1e1e2e";
-        format = "[ $user ](bold $style)";
+        format = "[ $user](bold $style)";
         disabled = false;
       };
 
       hostname = {
-        ssh_only = false;
+        ssh_only = true;
         style = "bg:#c099ff fg:#1e1e2e";
-        format = "[$hostname ](bold $style)";
+        format = "[@$hostname](bold $style)";
         disabled = false;
       };
 
       os = {
         disabled = false;
         style = "bg:#c099ff fg:#1e1e2e";
-        format = "[$symbol ]($style)";
+        format = "[ $symbol ]($style)";
         symbols = {
           Windows = "󰍲";
           Ubuntu = "󰕈";
@@ -189,9 +197,18 @@
           Redhat = "󱄛";
           RedHatEnterprise = "󱄛";
           Pop = "";
-          Kali = " ";
-          NixOS = " ";
+          Kali = "";
+          NixOS = "";
         };
+      };
+
+      nix_shell = {
+        disabled = false;
+        style = "bg:#c099ff fg:#1e1e2e";
+        format = "[\\( $name\\)](bold $style)";
+        impure_msg = "impure";
+        pure_msg = "pure";
+        unknown_msg = "";
       };
 
       directory = {

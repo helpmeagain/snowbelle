@@ -44,12 +44,6 @@ let
         format.custom = "ddd d |";
         position = "besideTime";
       };
-      font = {
-        family = "JetBrainsMono Nerd Font Mono";
-        size = 14;
-        weight = 400;
-        style = "Regular";
-      };
     };
   };
 
@@ -104,7 +98,6 @@ let
         opacity = "opaque";
         screen = "all";
         widgets = [
-          kickoffWidget
           {
             pager = {
               general = {
@@ -134,7 +127,10 @@ let
         hiding = "dodgewindows";
         opacity = "translucent";
         screen = "all";
-        widgets = [ iconTasksWidget ];
+        widgets = [
+          iconTasksWidget
+          kickoffWidget
+        ];
       }
     ];
 
