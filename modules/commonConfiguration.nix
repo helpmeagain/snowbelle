@@ -90,10 +90,6 @@
   # extensions that ship prebuilt native binaries, like Claude Code).
   # See: https://nix.dev/permalink/stub-ld
   programs.nix-ld.enable = true;
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   documentation.nixos.enable = false;
 
   fonts.packages = with pkgs; [ nerd-fonts.jetbrains-mono ];

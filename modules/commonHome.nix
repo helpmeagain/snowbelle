@@ -8,11 +8,21 @@
 }:
 {
   imports = [
-    ../user/terminal.nix
-    ../user/git.nix
-    ../user/vscode.nix
-    ../user/firefox.nix
-    ../user/keepass.nix
+    # Terminal
+    ./apps/terminal/bash.nix
+    ./apps/terminal/zsh.nix
+    ./apps/terminal/starship.nix
+    ./apps/terminal/tmux.nix
+
+    # Code
+    ./apps/code/vscode.nix
+    ./apps/code/git.nix
+
+    # Browser
+    ./apps/browser/firefox.nix
+
+    # Security
+    ./apps/security/keepass.nix
   ];
 
   # Pra adicionar ou deletar pkgs no host, bastando adicionar no home.nix do host

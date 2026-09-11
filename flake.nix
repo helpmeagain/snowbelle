@@ -12,8 +12,10 @@
 
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
     };
   };
 
@@ -28,6 +30,7 @@
     }:
     let
       lib = nixpkgs.lib;
+      system = "x86_64-linux";
 
       userSettings = {
         vscodePkg = "vscodium"; # vscode/vscodium
@@ -37,33 +40,37 @@
       };
 
       # desktop: "gnome" | "plasma" | "hyprland" | "none"
-      # nixos:   true  -> também gera nixosConfigurations.<nome>
-      #          false -> host não-NixOS (Nix em cima de Arch/Ubuntu, por exemplo), só gera home-manager standalone
+      # nixos:   true  -> também gera nixosConfigurations.<nome> | false -> host não-NixOS
       hosts = {
         notebook = {
-          system = "x86_64-linux";
           desktop = "plasma";
           nixos = true;
         };
         thinkpad = {
-          system = "x86_64-linux";
           desktop = "plasma";
           nixos = true;
         };
-        # vm-dev      = { system = "x86_64-linux"; desktop = "none";  nixos = true;  };
-        # arch-laptop = { system = "x86_64-linux"; desktop = "gnome"; nixos = false; };
+        desktop = {
+          desktop = "plasma";
+          nixos = false;
+        };
       };
 
-      systems = lib.unique (lib.mapAttrsToList (_: h: h.system) hosts);
-
-      pkgsBySystem = lib.genAttrs systems (
+      pkgsBySystem = (
         system:
         import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         }
       );
-      pkgsUnstableBySystem = lib.genAttrs systems (system: nixpkgs-unstable.legacyPackages.${system});
+
+      pkgsUnstableBySystem = (
+        system:
+        import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+        }
+      );
 
       desktopModules = {
         none = {
@@ -71,48 +78,49 @@
           home = [ ];
         };
         gnome = {
-          nixos = [ ./modules/desktop/gnome/nixos.nix ];
-          home = [ ./modules/desktop/gnome/home.nix ];
+          nixos = [ ./modules/profiles/gnome/nixos.nix ];
+          home = [ ./modules/profiles/gnome/home.nix ];
         };
         plasma = {
-          nixos = [ ./modules/desktop/plasma/nixos.nix ];
+          nixos = [ ./modules/profiles/plasma/nixos.nix ];
           home = [
             plasma-manager.homeModules.plasma-manager
-            ./modules/desktop/plasma/home.nix
+            ./modules/profiles/plasma/home.nix
           ];
         };
         hyprland = {
-          nixos = [ ./modules/desktop/hyprland/nixos.nix ];
-          home = [ ./modules/desktop/hyprland/home.nix ];
+          nixos = [ ./modules/profiles/hyprland/nixos.nix ];
+          home = [ ./modules/profiles/hyprland/home.nix ];
         };
       };
 
       mkNixosHost =
         name: host:
         lib.nixosSystem {
-          system = host.system;
+          system = system;
+          pkgs = pkgsBySystem system;
           modules = [
-            ./modules/nixos/common.nix
-            ./hosts/${name}/default.nix
+            ./modules/commonConfiguration.nix
+            ./modules/hosts/${name}/default.nix
           ]
           ++ desktopModules.${host.desktop}.nixos;
           specialArgs = {
-            pkgs-unstable = pkgsUnstableBySystem.${host.system};
+            pkgs-unstable = pkgsUnstableBySystem system;
           };
         };
 
       mkHomeConfig =
         name: host:
         home-manager.lib.homeManagerConfiguration {
-          pkgs = pkgsBySystem.${host.system};
+          pkgs = pkgsBySystem system;
           modules = [
-            ./modules/home/common.nix
+            ./modules/commonHome.nix
           ]
           ++ desktopModules.${host.desktop}.home
           # override opcional por host, só entra se o arquivo existir
-          ++ lib.optional (builtins.pathExists ./hosts/${name}/home.nix) ./hosts/${name}/home.nix;
+          ++ lib.optional (builtins.pathExists ./modules/hosts/${name}/home.nix) ./modules/hosts/${name}/home.nix;
           extraSpecialArgs = {
-            pkgs-unstable = pkgsUnstableBySystem.${host.system};
+            pkgs-unstable = pkgsUnstableBySystem system;
             inherit userSettings;
             hostIsNixos = host.nixos;
           };
