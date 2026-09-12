@@ -22,6 +22,7 @@
           DisableFirefoxStudies = true;
           DisableBuiltinPDFViewer = true;
           PasswordManagerEnabled = false;
+          TranslateEnabled = false;
 
           "DNSOverHTTPS" = {
             "Enabled" = true;
