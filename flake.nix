@@ -6,6 +6,7 @@
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:denful/import-tree";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
@@ -22,14 +23,11 @@
   };
 
   outputs =
-    inputs@{ flake-parts, ... }:
+    inputs@{ flake-parts, import-tree, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
-        ./options/settings.nix # userSettings, hosts, systems
-        ./options/desktops.nix # ambientes gráficos
-        ./options/nixpkgs.nix # como o nixpkgs é instanciado
-        ./options/packages.nix # packages, formatter
-        ./options/configurations.nix # montagem
+        flake-parts.flakeModules.modules
+        (import-tree ./modules)
       ];
     };
 }
