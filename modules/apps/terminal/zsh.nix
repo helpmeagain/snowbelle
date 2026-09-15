@@ -14,10 +14,6 @@
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
 
-        oh-my-zsh = {
-          enable = true;
-        };
-
         shellAliases = {
           ll = "ls -la";
           ".." = "cd ..";
@@ -26,6 +22,8 @@
         };
 
         initContent = ''
+          stty quit undef
+          bindkey '^\' autosuggest-toggle
           if [[ -z "$TMUX" && $- == *i* ]]; then
             if [[ -n "$VSCODE_INJECTION" || "$TERM_PROGRAM" == "vscode" ]]; then
               tmux_session="vscode"
