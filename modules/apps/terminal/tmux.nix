@@ -22,6 +22,11 @@
           set-option -g renumber-windows on
           bind c new-window -c "#{pane_current_path}"
 
+          # == CLIPBOARD ==
+          # Quando não implementa OSC 52, força a funcionar
+          bind-key -T copy-mode MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "wl-copy"
+          bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "wl-copy"
+
           # == BINDINGS ==
           # Splits
           bind \\ split-window -h -c "#{pane_current_path}"

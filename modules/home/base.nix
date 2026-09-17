@@ -29,6 +29,9 @@
 
         home.packages = lib.subtractLists config.dotfiles.excludePackages (
           (with pkgs; [
+            # Utils
+            wl-clipboard
+
             # Cryptography
             veracrypt
             cryptomator
@@ -74,6 +77,7 @@
 
         home.sessionVariables = {
           # EDITOR = "emacs";
+          TERM = "xterm-256color";
         };
 
         programs.claude-code.enable = true;

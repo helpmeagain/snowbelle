@@ -23,7 +23,7 @@
         # gnome-calendar
         # gnome-characters     # mapa de caracteres/emojis
         # gnome-clocks
-        # gnome-console        # kgx (você já usa via atalho <Super>t)
+        # gnome-console        # kgx
         gnome-contacts
         gnome-font-viewer
         # gnome-logs           # visualizador de logs (journalctl com GUI)

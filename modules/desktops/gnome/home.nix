@@ -19,12 +19,16 @@
 
       wallpaper = "file://${config.home.homeDirectory}/${config.dotfiles.wallpaper}";
 
+      # UUID fixo do perfil padrão do Ptyxis, só pra poder declarar as configurações dele via dconf
+      ptyxisProfileUuid = "cfe82723-351f-4011-be98-8aec4cf233ea";
+
       myExtensions = with pkgs.gnomeExtensions; [
         dash-to-dock
         blur-my-shell
         appindicator
         caffeine
         app-hider
+        just-perfection
       ];
     in
 
@@ -32,11 +36,14 @@
       home.packages = myExtensions ++ [
         pkgs.yaru-theme
         pkgs.bibata-cursors
+        pkgs.gnome-extension-manager
       ];
 
-      # Altera ícone do botão "Mostrar aplicações" para logo do NixOS
-      xdg.dataFile."icons/hicolor/scalable/apps/view-app-grid-user-symbolic.svg".source =
-        "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake-white.svg";
+      xdg.dataFile."icons/hicolor/scalable/apps/view-app-grid-user-symbolic.svg" =
+        lib.mkIf config.dotfiles.isNixos
+          {
+            source = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake-white.svg";
+          };
 
       xdg.mimeApps = {
         enable = true;
@@ -59,7 +66,7 @@
             favorite-apps = [
               "firefox.desktop"
               "org.gnome.Nautilus.desktop"
-              "org.gnome.Console.desktop"
+              "org.gnome.Ptyxis.desktop"
             ];
             disable-user-extensions = false;
             enabled-extensions = map (ext: ext.extensionUuid) myExtensions;
@@ -99,7 +106,7 @@
           "org/gnome/desktop/interface" = {
             monospace-font-name = "JetBrainsMono Nerd Font 11";
             color-scheme = "prefer-dark";
-            accent-color = "purple";
+            accent-color = "green";
             icon-theme = "Yaru-magenta";
             gtk-theme = "Yaru-magenta-dark";
             cursor-theme = "Bibata-Modern-Classic";
@@ -162,7 +169,7 @@
           "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
             name = "Terminal";
             binding = "<Super>t";
-            command = "kgx";
+            command = "ptyxis";
           };
           "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
             name = "Nautilius";
@@ -237,13 +244,14 @@
 
           "org/gnome/shell/extensions/blur-my-shell/appfolder" = {
             blur = true;
-            brightness = 0.3;
+            brightness = 0.5;
             sigma = 30;
           };
           "org/gnome/shell/extensions/blur-my-shell/applications" = {
             blur = true;
             pipeline = "pipeline_default";
             static-blur = true;
+            # whitelist = [ "org.gnome.Ptyxis" ];
           };
           "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
             blur = true;
@@ -290,6 +298,53 @@
             icon-opacity = 240;
             icon-saturation = 0.0;
             icon-size = 0;
+          };
+
+          "org/gnome/Ptyxis" = {
+            default-profile-uuid = ptyxisProfileUuid;
+            profile-uuids = [ ptyxisProfileUuid ];
+            audible-bell = false;
+            visual-bell = false;
+            restore-session = false;
+            restore-window-size = false;
+            cursor-shape = "ibeam";
+            use-system-font = false;
+            font-name = "JetBrainsMono Nerd Font 14";
+          };
+
+          "org/gnome/Ptyxis/Profiles/${ptyxisProfileUuid}" = {
+            label = "Default";
+            palette = "Chalkboard";
+            opacity = 0.95;
+          };
+
+          "org/gnome/Ptyxis/Shortcuts" = {
+            focus-tab-1 = "";
+            focus-tab-2 = "";
+            focus-tab-3 = "";
+            focus-tab-4 = "";
+            focus-tab-5 = "";
+            focus-tab-6 = "";
+            focus-tab-7 = "";
+            focus-tab-8 = "";
+            focus-tab-9 = "";
+            focus-tab-10 = "";
+          };
+
+          "org/gnome/shell/extensions/just-perfection" = {
+            panel-in-overview = true;
+            search = false;
+            workspace = false;
+            workspace-popup = false;
+            accessibility-menu = false;
+            animation = 4;
+            startup-status = 0;
+            workspaces-in-app-grid = false;
+            world-clock = false;
+            weather = false;
+            events-button = false;
+            quick-settings-dark-mode = false;
+            support-notifier-type = 0;
           };
 
           "org/gnome/shell/extensions/app-hider" = {

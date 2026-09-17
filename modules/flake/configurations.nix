@@ -46,7 +46,10 @@ let
         inherit pkgs;
         modules = [
           modules.homeManager.base
-          { dotfiles.isNixos = host.nixos; }
+          {
+            dotfiles.isNixos = host.nixos;
+            targets.genericLinux.enable = !host.nixos;
+          }
         ]
         ++ pick "homeManager" (desktopOf name host)
         ++ pick "homeManager" "host/${name}";
