@@ -22,6 +22,11 @@
       # UUID fixo do perfil padrão do Ptyxis, só pra poder declarar as configurações dele via dconf
       ptyxisProfileUuid = "cfe82723-351f-4011-be98-8aec4cf233ea";
 
+      isProprietaryVscode = config.dotfiles.vscode.package == "vscode";
+      vscodeBin = if isProprietaryVscode then "code" else "codium";
+      vscodeIcon = if isProprietaryVscode then "vscode" else "vscodium";
+      vscodeName = if isProprietaryVscode then "Visual Studio Code" else "VSCodium";
+
       myExtensions = with pkgs.gnomeExtensions; [
         dash-to-dock
         blur-my-shell
@@ -44,6 +49,29 @@
           {
             source = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake-white.svg";
           };
+
+      xdg.desktopEntries.${vscodeBin} = {
+        name = vscodeName;
+        genericName = "Text Editor";
+        comment = "Code Editing. Redefined.";
+        exec = "${vscodeBin} %F";
+        icon = vscodeIcon;
+        terminal = false;
+        type = "Application";
+        categories = [
+          "Utility"
+          "TextEditor"
+          "Development"
+          "IDE"
+        ];
+        mimeType = [
+          "text/plain"
+          "inode/directory"
+          "application/x-code-workspace"
+        ];
+      };
+
+      home.file."Modelos/Novo Arquivo Vazio".text = "";
 
       xdg.mimeApps = {
         enable = true;
@@ -106,7 +134,7 @@
           "org/gnome/desktop/interface" = {
             monospace-font-name = "JetBrainsMono Nerd Font 11";
             color-scheme = "prefer-dark";
-            accent-color = "green";
+            accent-color = "yellow";
             icon-theme = "Yaru-magenta";
             gtk-theme = "Yaru-magenta-dark";
             cursor-theme = "Bibata-Modern-Classic";
@@ -177,6 +205,11 @@
             command = "nautilus --new-window";
           };
 
+          "org/gnome/desktop/default-applications/terminal" = {
+            exec = "ptyxis";
+            exec-arg = "";
+          };
+
           "org/gnome/desktop/session" = {
             idle-delay = mkUint32 300;
           };
@@ -198,7 +231,7 @@
           };
 
           "org/gnome/nautilus/preferences" = {
-            default-folder-viewer = "list-view";
+            default-folder-viewer = "icon-view";
             search-filter-time-type = "last_modified";
             show-create-link = true;
             show-delete-permanently = true;
@@ -315,7 +348,7 @@
           "org/gnome/Ptyxis/Profiles/${ptyxisProfileUuid}" = {
             label = "Default";
             palette = "Chalkboard";
-            opacity = 0.95;
+            opacity = 0.98;
           };
 
           "org/gnome/Ptyxis/Shortcuts" = {

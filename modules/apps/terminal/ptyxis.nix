@@ -1,4 +1,5 @@
 {
+  # Only on gnome
   flake.modules.homeManager.gnome =
     {
       lib,
@@ -12,4 +13,11 @@
         package = pkgs.ptyxis;
       };
     };
+
+  flake.modules.nixos.gnome = {
+    programs.nautilus-open-any-terminal = {
+      enable = true;
+      terminal = "ptyxis";
+    };
+  };
 }

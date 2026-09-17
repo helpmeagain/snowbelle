@@ -30,6 +30,7 @@
         home.packages = lib.subtractLists config.dotfiles.excludePackages (
           (with pkgs; [
             # Utils
+            fastfetch
             wl-clipboard
 
             # Cryptography

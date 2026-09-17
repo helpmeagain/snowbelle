@@ -1,7 +1,7 @@
 {
   # A máquina inteira num arquivo: o registro dela...
   hosts.thinkpad = {
-    desktop = "plasma";
+    desktop = "gnome";
   };
 
   # ...e o que ela tem de sistema.
@@ -24,6 +24,7 @@
             efiSupport = true;
             useOSProber = true;
             configurationLimit = 2;
+            default = "saved";
             extraEntries = ''
               menuentry "Ubuntu" {
                 insmod part_gpt
@@ -61,6 +62,7 @@
 
       environment.systemPackages = [
         pkgs.distrobox
+        pkgs.proton-vpn
       ];
 
       fileSystems."/mnt/shared" = {
@@ -72,6 +74,7 @@
           "umask=0022"
           "nofail"
           "x-systemd.device-timeout=5s"
+          "x-gvfs-show"
         ];
       };
 

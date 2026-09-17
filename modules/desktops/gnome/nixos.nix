@@ -14,7 +14,6 @@
         gnome-user-docs
         # gnome-bluetooth      # applet de bluetooth (não remova se usar bluetooth pela GUI)
         # gnome-color-manager  # calibração de cor de monitor
-
         # baobab               # analisador de uso de disco
         decibels # player de audiobooks
         epiphany # navegador GNOME Web
@@ -23,7 +22,7 @@
         # gnome-calendar
         # gnome-characters     # mapa de caracteres/emojis
         # gnome-clocks
-        # gnome-console        # kgx
+        gnome-console # kgx
         gnome-contacts
         gnome-font-viewer
         # gnome-logs           # visualizador de logs (journalctl com GUI)
