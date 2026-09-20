@@ -9,21 +9,8 @@
     let
       vscodePkg = config.dotfiles.vscode.package;
       isProprietary = vscodePkg == "vscode";
-
-      vscodeTmuxTerminal = pkgs.writeShellScriptBin "vscode-tmux-terminal" ''
-        #!/usr/bin/env bash
-        set -e
-        if tmux has-session -t vscode 2>/dev/null; then
-          window_id=$(tmux new-window -Pt vscode -F '#{window_id}')
-          exec tmux attach-session -t "vscode:$window_id"
-        else
-          exec tmux new-session -s vscode
-        fi
-      '';
     in
     {
-      home.packages = [ vscodeTmuxTerminal ];
-
       programs.${vscodePkg} = {
         enable = lib.mkDefault true;
         profiles.default = {
@@ -60,12 +47,6 @@
             "editor.fontFamily" = "'Droid Sans Mono', 'monospace', monospace, 'JetBrainsMono Nerd Font'";
             "chat.disableAIFeatures" = true;
             "chat.agent.enabled" = false;
-            "terminal.integrated.profiles.linux" = {
-              "tmux (vscode session)" = {
-                path = "${vscodeTmuxTerminal}/bin/vscode-tmux-terminal";
-              };
-            };
-            "terminal.integrated.defaultProfile.linux" = "tmux (vscode session)";
           };
         };
       };
