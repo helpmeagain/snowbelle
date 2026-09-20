@@ -100,7 +100,7 @@
             enabled-extensions = map (ext: ext.extensionUuid) myExtensions;
             last-selected-power-profile = "power-saver";
             # Fixa 4 primeiros ícones do menu
-            app-picker-layout = mkRaw "[{'System': <{'position': <0>}>, 'Utilities': <{'position': <1>}>, 'org.gnome.Settings.desktop': <{'position': <2>}>, 'org.gnome.Extensions.desktop': <{'position': <3>}>}]";
+            # app-picker-layout = mkRaw "[{'System': <{'position': <0>}>, 'Utilities': <{'position': <1>}>, 'org.gnome.Settings.desktop': <{'position': <2>}>, 'org.gnome.Extensions.desktop': <{'position': <3>}>}]";
           };
 
           "org/gnome/shell/app-switcher" = {
@@ -134,7 +134,7 @@
           "org/gnome/desktop/interface" = {
             monospace-font-name = "JetBrainsMono Nerd Font 11";
             color-scheme = "prefer-dark";
-            accent-color = "yellow";
+            accent-color = "slate";
             icon-theme = "Yaru-magenta";
             gtk-theme = "Yaru-magenta-dark";
             cursor-theme = "Bibata-Modern-Classic";
@@ -237,6 +237,10 @@
             show-delete-permanently = true;
             show-image-thumbnails = "always";
           };
+
+          "org/gtk/gtk4/Settings/FileChooser" = {
+            sort-directories-first = true;
+          };
           "org/gnome/nautilus/icon-view" = {
             default-zoom-level = "medium";
           };
@@ -289,7 +293,7 @@
           "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
             blur = true;
             brightness = 0.50;
-            corner-radius = 25;
+            corner-radius = 20;
             pipeline = "pipeline_default";
             sigma = 10;
             static-blur = false;
@@ -297,7 +301,7 @@
             unblur-in-overview = false;
           };
           "org/gnome/shell/extensions/blur-my-shell/panel" = {
-            brightness = 0.45;
+            brightness = 0.25;
             corner-radius = 0;
             force-light-text = false;
             pipeline = "pipeline_default";
@@ -398,6 +402,7 @@
               "libreoffice-impress.desktop"
               "libreoffice-math.desktop"
               "libreoffice-writer.desktop"
+              "mpv.desktop"
             ];
           };
         };

@@ -32,6 +32,7 @@
             # Utils
             fastfetch
             wl-clipboard
+            yt-dlp
 
             # Cryptography
             veracrypt
