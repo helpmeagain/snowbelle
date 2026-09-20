@@ -57,6 +57,7 @@
             "window.titleBarStyle" = "custom";
             "telemetry.telemetryLevel" = "off";
             "editor.fontLigatures" = true;
+            "editor.fontFamily" = "'Droid Sans Mono', 'monospace', monospace, 'JetBrainsMono Nerd Font'";
             "chat.disableAIFeatures" = true;
             "chat.agent.enabled" = false;
             "terminal.integrated.profiles.linux" = {
