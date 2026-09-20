@@ -38,6 +38,5 @@
     );
   };
 
-  # systems do flake-parts sai da lista de hosts
   config.systems = lib.unique (lib.mapAttrsToList (_: host: host.system) config.hosts);
 }

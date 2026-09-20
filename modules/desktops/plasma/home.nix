@@ -565,31 +565,5 @@
         fi
         PATH="${pkgs.kdePackages.qttools}/bin:${pkgs.kdePackages.plasma-workspace}/bin:${pkgs.systemd}/bin:$PATH" run ${config.xdg.dataHome}/plasma-manager/run_all.sh
       '';
-
-      # === Konsole ===
-      programs.konsole = {
-        enable = true;
-        defaultProfile = "Perfil 1";
-
-        customColorSchemes.DarkPastels = ./color-schemes/DarkPastels.colorscheme;
-
-        profiles."Perfil 1" = {
-          name = "Perfil 1";
-          colorScheme = "DarkPastels";
-          font = {
-            name = "JetBrains Mono";
-            size = 13;
-          };
-          extraConfig = {
-            Appearance.WordMode = "false";
-          };
-        };
-
-        extraConfig = {
-          MainWindow.MenuBar = "Disabled";
-          KonsoleWindow.ShowWindowTitleOnTitleBar = "true";
-          "Notification Messages".CloseAllTabs = "true";
-        };
-      };
     };
 }
