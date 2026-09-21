@@ -19,9 +19,6 @@
 
       wallpaper = "file://${config.home.homeDirectory}/${config.dotfiles.wallpaper}";
 
-      # UUID fixo do perfil padrão do Ptyxis, só pra poder declarar as configurações dele via dconf
-      ptyxisProfileUuid = "cfe82723-351f-4011-be98-8aec4cf233ea";
-
       isProprietaryVscode = config.dotfiles.vscode.package == "vscode";
       vscodeBin = if isProprietaryVscode then "code" else "codium";
       vscodeIcon = if isProprietaryVscode then "vscode" else "vscodium";
@@ -93,8 +90,9 @@
             # Apps fixados na dock
             favorite-apps = [
               "firefox.desktop"
+              "${vscodeBin}.desktop"
               "org.gnome.Nautilus.desktop"
-              "org.gnome.Ptyxis.desktop"
+              "com.mitchellh.ghostty.desktop"
             ];
             disable-user-extensions = false;
             enabled-extensions = map (ext: ext.extensionUuid) myExtensions;
@@ -197,7 +195,7 @@
           "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
             name = "Terminal";
             binding = "<Super>t";
-            command = "ptyxis";
+            command = "ghostty";
           };
           "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
             name = "Nautilius";
@@ -206,7 +204,7 @@
           };
 
           "org/gnome/desktop/default-applications/terminal" = {
-            exec = "ptyxis";
+            exec = "ghostty";
             exec-arg = "";
           };
 
@@ -288,7 +286,6 @@
             blur = true;
             pipeline = "pipeline_default";
             static-blur = true;
-            # whitelist = [ "org.gnome.Ptyxis" ];
           };
           "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
             blur = true;
@@ -301,7 +298,7 @@
             unblur-in-overview = false;
           };
           "org/gnome/shell/extensions/blur-my-shell/panel" = {
-            brightness = 0.25;
+            brightness = 0.40;
             corner-radius = 0;
             force-light-text = false;
             pipeline = "pipeline_default";
@@ -337,46 +334,15 @@
             icon-size = 0;
           };
 
-          "org/gnome/Ptyxis" = {
-            default-profile-uuid = ptyxisProfileUuid;
-            profile-uuids = [ ptyxisProfileUuid ];
-            audible-bell = false;
-            visual-bell = false;
-            restore-session = false;
-            restore-window-size = false;
-            cursor-shape = "ibeam";
-            use-system-font = false;
-            font-name = "JetBrainsMono Nerd Font 14";
-          };
-
-          "org/gnome/Ptyxis/Profiles/${ptyxisProfileUuid}" = {
-            label = "Default";
-            palette = "Chalkboard";
-            opacity = 0.98;
-          };
-
-          "org/gnome/Ptyxis/Shortcuts" = {
-            focus-tab-1 = "";
-            focus-tab-2 = "";
-            focus-tab-3 = "";
-            focus-tab-4 = "";
-            focus-tab-5 = "";
-            focus-tab-6 = "";
-            focus-tab-7 = "";
-            focus-tab-8 = "";
-            focus-tab-9 = "";
-            focus-tab-10 = "";
-          };
-
           "org/gnome/shell/extensions/just-perfection" = {
             panel-in-overview = true;
-            search = false;
+            search = true;
             workspace = false;
             workspace-popup = false;
             accessibility-menu = false;
             animation = 4;
             startup-status = 0;
-            workspaces-in-app-grid = false;
+            workspaces-in-app-grid = true;
             world-clock = false;
             weather = false;
             events-button = false;
