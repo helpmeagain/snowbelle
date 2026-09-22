@@ -12,7 +12,7 @@
         enable = lib.mkDefault true;
 
         settings = {
-          background-opacity = 0.98;
+          background-opacity = 0.80;
           background-blur = true;
           font-size = 14;
           bell-features = "no-audio";

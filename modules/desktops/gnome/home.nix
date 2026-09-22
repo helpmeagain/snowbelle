@@ -284,12 +284,20 @@
           };
           "org/gnome/shell/extensions/blur-my-shell/applications" = {
             blur = true;
+            blur-on-overview = true;
+            brightness = 1.0;
+            corner-when-maximized = true;
+            dynamic-opacity = false;
+            enable-all = false;
+            opacity = 255;
             pipeline = "pipeline_default";
-            static-blur = true;
+            sigma = 15;
+            static-blur = false;
+            whitelist = [ "com.mitchellh.ghostty" ];
           };
           "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
             blur = true;
-            brightness = 0.50;
+            brightness = 0.5;
             corner-radius = 20;
             pipeline = "pipeline_default";
             sigma = 10;
@@ -298,7 +306,7 @@
             unblur-in-overview = false;
           };
           "org/gnome/shell/extensions/blur-my-shell/panel" = {
-            brightness = 0.40;
+            brightness = 0.4;
             corner-radius = 0;
             force-light-text = false;
             pipeline = "pipeline_default";
