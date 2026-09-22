@@ -40,6 +40,7 @@
         };
 
         initrd.systemd.enable = true;
+        initrd.kernelModules = [ "i915" ];
 
         plymouth.enable = true;
         kernelParams = [
