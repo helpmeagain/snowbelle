@@ -22,6 +22,8 @@
           # theme = "Everforest Dark Hard";
           cursor-style = "bar";
           confirm-close-surface = false;
+          window-padding-balance = true;
+          window-padding-y = 0;
         };
       };
     };

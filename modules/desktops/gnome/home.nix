@@ -143,6 +143,7 @@
           "org/gnome/desktop/wm/keybindings" = {
             close = [ "<Super>c" ];
             toggle-maximized = [ "<Super>f" ];
+            toggle-fullscreen = [ "<Super><Shift>f" ];
             switch-input-source = emptyStrings;
             switch-input-source-backward = emptyStrings;
             move-to-workspace-1 = [ "<Super><Shift>1" ];
