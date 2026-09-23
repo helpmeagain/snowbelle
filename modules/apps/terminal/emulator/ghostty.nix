@@ -12,7 +12,7 @@
         enable = lib.mkDefault true;
 
         settings = {
-          background-opacity = 0.80;
+          background-opacity = lib.mkDefault 0.80;
           background-blur = true;
           font-size = 14;
           bell-features = "no-audio";
@@ -27,4 +27,9 @@
         };
       };
     };
+
+  # Only on hyprland
+  flake.modules.homeManager.hyprland = {
+    programs.ghostty.settings.background-opacity = 0.95;
+  };
 }

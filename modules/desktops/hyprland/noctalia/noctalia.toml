@@ -1,0 +1,54 @@
+[bar.default]
+background_opacity = 0.8
+concave_edge_corners = false
+end = [ "tray", "notifications", "network", "bluetooth", "volume", "battery" ]
+margin_ends = 0
+radius = 0
+shadow = false
+start = [ "workspaces" ]
+
+[control_center]
+hidden_tabs = [ "media", "weather", "calendar", "notifications", "screen-time" ]
+sidebar_section = "none"
+
+[desktop_widgets.grid]
+cell_size = 16
+major_interval = 4
+visible = true
+
+[lockscreen]
+blurred_desktop = true
+
+[shell]
+corner_radius_scale = 0.65
+polkit_agent = true
+
+[shell.launcher]
+categories = false
+pinned = [ "firefox", "org.kde.dolphin", "com.mitchellh.ghostty", "codium" ]
+
+[shell.screenshot]
+confirm_region = true
+
+[theme]
+source = "wallpaper"
+
+[wallpaper]
+directory = "~/Imagens/Wallpapers"
+transition = [ "fade" ]
+transition_duration = 500
+
+[weather]
+enabled = false
+
+[widget.network]
+show_label = false
+
+[widget.volume]
+show_label = false
+
+[widget.workspaces]
+capsule = true
+capsule_fill = "on_secondary"
+capsule_opacity = 0.5
+style = "minimal"

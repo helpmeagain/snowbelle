@@ -7,6 +7,6 @@
     }:
 
     {
-      programs.kitty.enable = lib.mkDefault true;
+      programs.kitty.enable = lib.mkDefault false;
     };
 }
