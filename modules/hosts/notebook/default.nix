@@ -1,7 +1,7 @@
 {
   # A máquina inteira num arquivo: o registro dela...
   hosts.notebook = {
-    desktop = "gnome";
+    desktop = "hyprland";
   };
 
   # ...e o que ela tem de sistema.

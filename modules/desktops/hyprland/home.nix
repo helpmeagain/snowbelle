@@ -2,16 +2,25 @@
 
 {
   flake.modules.homeManager.hyprland =
+    { pkgs, ... }:
+
     {
       imports = [ inputs.noctalia.homeModules.default ];
 
-      wayland.windowManager.hyprland.enable = true;
+      xdg.configFile."hypr" = {
+        source = ./conf;
+        recursive = true;
+      };
 
-      # Config básica — o resto (bar, widgets, tema) fica pra depois.
-      # O package já vem definido (mkDefault) pelo próprio homeModules.default do noctalia.
+      home.packages = with pkgs; [
+        kdePackages.dolphin
+        bibata-cursors
+      ];
+
       programs.noctalia = {
         enable = true;
-        systemd.enable = true;
+        systemd.enable = false;
+        settings.shell.polkit_agent = true;
       };
     };
 }
