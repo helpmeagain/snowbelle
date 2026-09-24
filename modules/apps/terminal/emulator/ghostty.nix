@@ -14,7 +14,7 @@
         settings = {
           background-opacity = lib.mkDefault 0.80;
           background-blur = true;
-          font-size = 14;
+          font-size = 12;
           bell-features = "no-audio";
           theme = lib.mkDefault "Chalkboard";
           # theme = "Catppuccin Mocha";
@@ -24,6 +24,7 @@
           confirm-close-surface = false;
           window-padding-balance = true;
           window-padding-y = 0;
+          command = "/home/help/.nix-profile/bin/fish";
         };
       };
     };

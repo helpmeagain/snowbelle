@@ -83,9 +83,9 @@
         ];
       };
 
-      environment.shells = with pkgs; [ zsh ];
-      users.defaultUserShell = pkgs.zsh;
-      programs.zsh.enable = true;
+      # environment.shells = with pkgs; [ zsh ];
+      # users.defaultUserShell = pkgs.zsh;
+      # programs.zsh.enable = true;
 
       # Allow dynamically linked "generic Linux" binaries to run (e.g. VS Code
       # extensions that ship prebuilt native binaries, like Claude Code).
