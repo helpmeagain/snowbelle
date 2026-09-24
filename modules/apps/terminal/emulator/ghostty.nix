@@ -16,7 +16,7 @@
           background-blur = true;
           font-size = 14;
           bell-features = "no-audio";
-          theme = "Chalkboard";
+          theme = lib.mkDefault "Chalkboard";
           # theme = "Catppuccin Mocha";
           # theme = "Gruvbox Material Dark";
           # theme = "Everforest Dark Hard";
@@ -31,5 +31,6 @@
   # Only on hyprland
   flake.modules.homeManager.hyprland = {
     programs.ghostty.settings.background-opacity = 0.95;
+    programs.ghostty.settings.theme = "noctalia";
   };
 }

@@ -1,3 +1,5 @@
+# Conferir mudanças cat ~/.local/state/noctalia/settings.toml
+
 [bar.default]
 background_opacity = 0.8
 concave_edge_corners = false
@@ -33,6 +35,9 @@ confirm_region = true
 [theme]
 source = "wallpaper"
 
+[theme.templates]
+builtin_ids = [ "gtk3", "gtk4", "ghostty",  "hyprland", "kcolorscheme" ]
+
 [wallpaper]
 directory = "~/Imagens/Wallpapers"
 transition = [ "fade" ]
@@ -40,6 +45,13 @@ transition_duration = 500
 
 [weather]
 enabled = false
+
+[widget.clock]
+format = "{:%d de %b  %H:%M}"
+
+[widget.battery]
+display_mode = "graphic"
+show_label = false
 
 [widget.network]
 show_label = false
