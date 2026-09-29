@@ -12,8 +12,8 @@
         enable = lib.mkDefault true;
 
         shellAliases = {
-          update = "sudo nixos-rebuild switch --flake $HOME/.dotfiles";
-          hupdate = "home-manager switch --flake $HOME/.dotfiles";
+          nix-switch = "sudo nixos-rebuild switch --flake $HOME/.dotfiles";
+          hm-switch = "home-manager switch --flake $HOME/.dotfiles";
         };
       };
     };

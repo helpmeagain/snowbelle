@@ -24,11 +24,15 @@
               ms-python.vscode-python-envs
               ms-python.debugpy
               ms-vscode.cpptools
+              ms-toolsai.jupyter
+              mkhl.direnv
+              detachhead.basedpyright
             ]
             ++ lib.optionals isProprietary [
 
             ];
           userSettings = {
+            "python.languageServer" = "None";
             "nix.enableLanguageServer" = true;
             "nix.serverPath" = "${pkgs.nil}/bin/nil";
             "nix.formatterPath" = "${pkgs.alejandra}/bin/alejandra";

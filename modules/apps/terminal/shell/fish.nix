@@ -11,8 +11,10 @@
       programs.fish = {
         enable = lib.mkDefault true;
         shellAbbrs = {
-          update = "sudo nixos-rebuild switch --flake $HOME/.dotfiles";
-          hupdate = "home-manager switch --flake $HOME/.dotfiles";
+          nix-switch = "sudo nixos-rebuild switch --flake $HOME/.dotfiles";
+          hm-switch = "home-manager switch --flake $HOME/.dotfiles";
+          nix-py = "nix flake init -t $HOME/.dotfiles#python";
+          nix-js = "nix flake init -t $HOME/.dotfiles#node";
         };
         interactiveShellInit = ''
           set -g fish_greeting
