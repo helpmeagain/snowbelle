@@ -27,7 +27,7 @@ polkit_agent = true
 
 [shell.launcher]
 categories = false
-pinned = [ "firefox", "org.kde.dolphin", "com.mitchellh.ghostty", "codium" ]
+pinned = [ "firefox", "thunar", "com.mitchellh.ghostty", "codium" ]
 
 [shell.screenshot]
 confirm_region = true

@@ -1,6 +1,6 @@
 -- Programs
 terminal    = "ghostty"
-fileManager = "dolphin"
+fileManager = "thunar"
 
 -- Binds
 MainMod = "SUPER"
