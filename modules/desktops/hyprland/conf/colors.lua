@@ -1,0 +1,6 @@
+Primary = "rgba(160, 202, 253, 1.0)"
+Secondary = "rgba(184, 200, 222, 1.0)"
+Tertiary = "rgba(232, 182, 240, 1.0)"
+Surface = "rgba(17, 19, 23, 1.0)"
+Surface_lowest = "rgba(12, 14, 17, 1.0)"
+Error = "rgba(255, 180, 171, 1.0)"

@@ -3,11 +3,35 @@
     { pkgs, ... }:
 
     {
-      programs.hyprland.enable = true;
+      programs.hyprland = {
+        enable = true;
+        package = pkgs.unstable.hyprland;
+        portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
+      };
+
+      services.upower.enable = true;
+      services.power-profiles-daemon.enable = true;
+
+      programs.thunar = {
+        enable = true;
+        plugins = with pkgs; [
+          thunar-archive-plugin
+          thunar-volman
+        ];
+      };
+      programs.xfconf.enable = true;
+      services.gvfs.enable = true;
+      services.tumbler.enable = true;
+
+      qt = {
+        enable = true;
+        platformTheme = "kde";
+        style = "breeze";
+      };
 
       services.greetd = {
         enable = true;
-        settings.default_session.command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        settings.default_session.command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-session --cmd start-hyprland";
       };
     };
 }

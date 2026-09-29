@@ -13,7 +13,7 @@
       '';
 
       programs.zsh = {
-        enable = lib.mkDefault true;
+        enable = lib.mkDefault false;
         enableCompletion = true;
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
