@@ -27,6 +27,11 @@
           command = "/home/help/.nix-profile/bin/fish";
         };
       };
+
+      xdg.terminal-exec = {
+        enable = true;
+        settings.default = [ "com.mitchellh.ghostty.desktop" ];
+      };
     };
 
   # Only on hyprland

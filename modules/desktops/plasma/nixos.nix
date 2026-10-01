@@ -13,7 +13,7 @@
         kmahjongg
         kmines
         kpat
-        # konsole            # terminal
+        konsole # terminal (substituído pelo Ghostty)
         # dolphin            # gerenciador de arquivos
         # okular             # visualizador de PDF
       ];

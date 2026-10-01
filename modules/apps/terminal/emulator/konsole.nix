@@ -9,10 +9,10 @@
 
     {
       programs.konsole = {
-        enable = true;
+        enable = false;
         defaultProfile = "Perfil 1";
 
-        customColorSchemes.DarkPastels = ../../desktops/plasma/color-schemes/DarkPastels.colorscheme;
+        customColorSchemes.DarkPastels = ../../../desktops/plasma/color-schemes/DarkPastels.colorscheme;
 
         profiles."Perfil 1" = {
           name = "Perfil 1";
