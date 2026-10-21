@@ -2,11 +2,19 @@ require("colors")
 
 -- Monitors
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
+-- Regra geral: monitores externos ficam no `auto` do Hyprland.
 hl.monitor({
     output   = "",
     mode     = "preferred",
     position = "auto",
     scale    = "auto",
+})
+
+hl.monitor({
+    output   = "eDP-1",
+    mode     = "preferred",
+    position = "auto",
+    scale    = 1.25,
 })
 
 -- Refer to https://wiki.hypr.land/Configuring/Basics/Variables/
