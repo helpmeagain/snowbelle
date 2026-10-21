@@ -11,8 +11,15 @@
       programs.fish = {
         enable = lib.mkDefault true;
         shellAbbrs = {
-          update = "sudo nixos-rebuild switch --flake $HOME/.dotfiles";
-          hupdate = "home-manager switch --flake $HOME/.dotfiles";
+          nix-switch = "sudo nixos-rebuild switch --flake $HOME/.dotfiles";
+          hm-switch = "home-manager switch --flake $HOME/.dotfiles";
+          nix-py = "nix flake init -t $HOME/.dotfiles#python";
+          nix-js = "nix flake init -t $HOME/.dotfiles#node";
+          ex1 = "python vulnerable_cli.py collect --name 'diagnostico.zip logs; whoami #'";
+          exc1 = "python secure_cli.py collect --name 'diag.tar.gz logs; whoami #'";
+          ex2 = "python vulnerable_cli.py filter --expr '__import__(\"os\").system(\"whoami\")'";
+          exc2 = "python secure_cli.py filter --expr '__import__(\"os\").system(\"whoami\")'";
+
         };
         interactiveShellInit = ''
           set -g fish_greeting
