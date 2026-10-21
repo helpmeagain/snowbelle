@@ -28,7 +28,7 @@
           launchers = [
             "preferred://browser"
             "preferred://filemanager"
-            "applications:org.kde.konsole.desktop"
+            "applications:com.mitchellh.ghostty.desktop"
           ];
         };
       };
@@ -182,6 +182,20 @@
         Name=Abrir com VSCode
         Icon=${vscodeIcon}
         Exec=${vscodeBin} %U
+      '';
+
+      xdg.dataFile."kio/servicemenus/open-ghostty-here.desktop".text = ''
+        [Desktop Entry]
+        Type=Service
+        X-KDE-ServiceTypes=KonqPopupMenu/Plugin
+        MimeType=inode/directory;
+        Actions=openGhosttyHere;
+        X-KDE-Priority=TopLevel
+
+        [Desktop Action openGhosttyHere]
+        Name=Abrir Ghostty nesta pasta
+        Icon=com.mitchellh.ghostty
+        Exec=ghostty --working-directory=%f
       '';
 
       programs.plasma = {
@@ -372,7 +386,7 @@
             "activate task manager entry 9" = "none";
           };
 
-          "services/org.kde.konsole.desktop" = {
+          "services/com.mitchellh.ghostty.desktop" = {
             _launch = [
               "Meta+T"
               "Meta+Return"
@@ -443,6 +457,7 @@
               XftAntialias = true;
               XftHintStyle = "hintslight";
               XftSubPixel = "rgb";
+              TerminalApplication = "ghostty --working-directory=inherit";
             };
             KDE = {
               AnimationDurationFactor = 0.25;
