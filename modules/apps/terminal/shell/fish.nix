@@ -13,6 +13,7 @@
         shellAbbrs = {
           nix-switch = "sudo nixos-rebuild switch --flake $HOME/.dotfiles";
           hm-switch = "home-manager switch --flake $HOME/.dotfiles";
+          fl-update = "nix flake update --flake $HOME/.dotfiles";
           nix-py = "nix flake init -t $HOME/.dotfiles#python";
           nix-js = "nix flake init -t $HOME/.dotfiles#node";
         };
