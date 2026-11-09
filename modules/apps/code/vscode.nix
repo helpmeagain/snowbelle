@@ -47,6 +47,12 @@
             "editor.fontFamily" = "'Droid Sans Mono', 'monospace', monospace, 'JetBrainsMono Nerd Font'";
             "chat.disableAIFeatures" = true;
             "chat.agent.enabled" = false;
+            "terminal.integrated.defaultProfile.linux" = "fish";
+            "terminal.integrated.profiles.linux" = {
+              "fish" = {
+                "path" = "${pkgs.fish}/bin/fish";
+              };
+            };
           };
         };
       };

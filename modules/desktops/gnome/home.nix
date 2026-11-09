@@ -25,7 +25,8 @@
       vscodeName = if isProprietaryVscode then "Visual Studio Code" else "VSCodium";
 
       myExtensions = with pkgs.gnomeExtensions; [
-        dash-to-dock
+        # dash-to-dock
+        hot-edge
         blur-my-shell
         appindicator
         caffeine
@@ -379,6 +380,11 @@
               "libreoffice-writer.desktop"
               "mpv.desktop"
             ];
+          };
+
+          "org/gnome/shell/extensions/hotedge" = {
+            show-animation = false;
+            pressure-threshold = 250;
           };
         };
       };

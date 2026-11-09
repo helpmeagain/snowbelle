@@ -33,6 +33,7 @@
             fastfetch
             wl-clipboard
             yt-dlp
+            qbittorrent
 
             # Cryptography
             veracrypt
