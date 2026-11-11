@@ -18,7 +18,7 @@
             with pkgs.vscode-extensions;
             [
               jnoortheen.nix-ide
-              anthropic.claude-code
+              # anthropic.claude-code
               pkief.material-icon-theme
               ms-python.python
               ms-python.vscode-python-envs

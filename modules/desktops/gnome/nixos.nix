@@ -32,7 +32,7 @@
         # gnome-tecla          # mostra teclas pressionadas (debug de teclado)
         gnome-weather
         # loupe                # visualizador de imagens
-        # nautilus             # gerenciador de arquivos (você usa via <Super>e, não remova)
+        nautilus # gerenciador de arquivos
         # papers               # visualizador de PDF (antigo Evince)
         gnome-connections # cliente RDP/VNC
         # showtime             # player de vídeo
@@ -45,5 +45,8 @@
       # wrapper do gnome-shell usa `--prefix` nessa variável, ou seja, preserva o que
       # vier do ambiente — e o PAM a define antes da sessão gráfica subir.
       environment.sessionVariables.GI_TYPELIB_PATH = "${gnome-rounded-blur}/lib/girepository-1.0";
+      environment.pathsToLink = [
+        "share/thumbnailers"
+      ];
     };
 }

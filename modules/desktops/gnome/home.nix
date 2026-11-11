@@ -10,6 +10,7 @@
     let
       inherit (lib.hm) gvariant;
       mkUint32 = gvariant.mkUint32;
+      mkUint64 = gvariant.mkUint64;
       emptyStrings = gvariant.mkEmptyArray gvariant.type.string;
       mkRaw = value: {
         _type = "gvariant";
@@ -70,6 +71,16 @@
       };
 
       home.file."Modelos/Novo Arquivo Vazio".text = "";
+      home.file.".local/bin/nemo-copy-path".text = ''
+        #!/bin/sh
+        if [ "$#" -eq 0 ]; then
+          exit 1
+        fi
+
+        printf '%s\n' "$@" | ${pkgs.wl-clipboard}/bin/wl-copy
+      '';
+
+      home.file.".local/bin/nemo-copy-path".executable = true;
 
       xdg.mimeApps = {
         enable = true;
@@ -83,6 +94,14 @@
         };
       };
 
+      xdg.dataFile = {
+        "thumbnailers/ffmpegthumbnailer.thumbnailer".source =
+          "${pkgs.ffmpegthumbnailer}/share/thumbnailers/ffmpegthumbnailer.thumbnailer";
+
+        "thumbnailers/ffmpegthumbnailer-audio.thumbnailer".source =
+          "${pkgs.ffmpegthumbnailer}/share/thumbnailers/ffmpegthumbnailer-audio.thumbnailer";
+      };
+
       dconf = {
         enable = true;
 
@@ -92,7 +111,8 @@
             favorite-apps = [
               "firefox.desktop"
               "${vscodeBin}.desktop"
-              "org.gnome.Nautilus.desktop"
+              # "org.gnome.Nautilus.desktop"
+              "nemo.desktop"
               "com.mitchellh.ghostty.desktop"
             ];
             disable-user-extensions = false;
@@ -200,9 +220,9 @@
             command = "ghostty";
           };
           "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
-            name = "Nautilius";
+            name = "Nemo";
             binding = "<Super>e";
-            command = "nautilus --new-window";
+            command = "nemo";
           };
 
           "org/gnome/desktop/default-applications/terminal" = {
@@ -385,6 +405,44 @@
           "org/gnome/shell/extensions/hotedge" = {
             show-animation = false;
             pressure-threshold = 250;
+          };
+
+          "org/nemo/preferences" = {
+            disable-menu-warning = true;
+            show-computer-icon-toolbar = false;
+            show-edit-icon-toolbar = false;
+            show-hidden-files = false;
+            show-open-in-terminal-toolbar = false;
+            show-previous-icon-toolbar = true;
+            show-search-icon-toolbar = false;
+            show-toggle-extra-pane-toolbar = false;
+            show-up-icon-toolbar = false;
+            show-image-thumbnails = "always";
+            thumbnail-limit = mkUint64 1073741824;
+            thumbnail-threads = 2;
+          };
+
+          "org/nemo/preferences/menu-config" = {
+            selection-menu-open-in-terminal = true;
+          };
+
+          "org/nemo/window-state" = {
+            maximized = true;
+            side-pane-view = "places";
+            sidebar-bookmark-breakpoint = 5;
+            sidebar-width = 198;
+            start-with-menu-bar = false;
+            start-with-sidebar = true;
+            start-with-status-bar = false;
+          };
+
+          "org/cinnamon/desktop/applications/terminal" = {
+            exec = "${pkgs.ghostty}/bin/ghostty";
+            exec-arg = "--working-directory=%s";
+          };
+
+          "org/nemo/icon-view" = {
+            default-zoom-level = "large";
           };
         };
       };

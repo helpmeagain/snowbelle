@@ -24,6 +24,7 @@
           confirm-close-surface = false;
           window-padding-balance = true;
           window-padding-y = 0;
+          working-directory = "inherit";
           command = "/home/help/.nix-profile/bin/fish";
         };
       };
