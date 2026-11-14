@@ -17,5 +17,6 @@
         # dolphin            # gerenciador de arquivos
         # okular             # visualizador de PDF
       ];
+      programs.partition-manager.enable = true;
     };
 }

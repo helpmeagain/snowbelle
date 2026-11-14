@@ -27,6 +27,7 @@
         iconTasks = {
           launchers = [
             "preferred://browser"
+            "applications:${vscodeBin}.desktop"
             "preferred://filemanager"
             "applications:com.mitchellh.ghostty.desktop"
           ];
@@ -110,6 +111,7 @@
               "org.kde.plasma.bluetooth"
               "org.kde.plasma.volume"
               { battery.showPercentage = true; }
+              kickoffWidget
             ];
           }
 
@@ -117,13 +119,13 @@
             location = "bottom";
             height = 55;
             floating = true;
-            lengthMode = "fit";
             hiding = "dodgewindows";
             opacity = "translucent";
             screen = "all";
             widgets = [
+              "org.kde.plasma.panelspacer"
               iconTasksWidget
-              kickoffWidget
+              "org.kde.plasma.panelspacer"
             ];
           }
         ];
@@ -329,6 +331,10 @@
             "Window to Desktop 5" = "Meta+%";
 
             # Krohnkite (tiling)
+            "KrohnkiteToggleFloat" = "none";
+            "KrohnkiteFloatAll" = "none";
+            "KrohnkiteTileLayout" = "none";
+            "KrohnkiteSetMaster" = "none";
             "KrohnkiteFocusLeft" = "Meta+H";
             "KrohnkiteFocusDown" = "Meta+J";
             "KrohnkiteFocusUp" = "Meta+K";

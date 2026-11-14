@@ -11,9 +11,9 @@
       programs.fish = {
         enable = lib.mkDefault true;
         shellAbbrs = {
-          nix-switch = "sudo nixos-rebuild switch --flake $HOME/.dotfiles";
-          hm-switch = "home-manager switch --flake $HOME/.dotfiles";
-          fl-update = "nix flake update --flake $HOME/.dotfiles";
+          nix-switch = "sudo nixos-rebuild switch --flake $HOME/Projetos/Repositórios/snowbelle/";
+          hm-switch = "home-manager switch --flake $HOME/Projetos/Repositórios/snowbelle";
+          fl-update = "nix flake update --flake $HOME/Projetos/Repositórios/snowbelle";
           nix-py = "nix flake init -t $HOME/.dotfiles#python";
           nix-js = "nix flake init -t $HOME/.dotfiles#node";
           ex1 = "python vulnerable_cli.py collect --name 'diagnostico.zip logs; whoami #'";

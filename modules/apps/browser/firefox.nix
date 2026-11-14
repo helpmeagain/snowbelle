@@ -11,7 +11,7 @@
     in
     {
       programs.firefox = {
-        enable = lib.mkDefault true;
+        enable = lib.mkDefault false;
         languagePacks = [
           "pt-BR"
           "en-US"
