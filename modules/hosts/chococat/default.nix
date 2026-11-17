@@ -17,16 +17,27 @@
 
       boot = {
         loader = {
-          systemd-boot.enable = false;
-          grub = {
+          timeout = 15;
+          efi.canTouchEfiVariables = true;
+
+          limine = {
             enable = true;
-            device = "nodev";
-            efiSupport = true;
-            useOSProber = true;
-            default = "saved";
-          };
-          efi = {
-            canTouchEfiVariables = true;
+            secureBoot.enable = true;
+            maxGenerations = 10;
+
+            extraConfig = ''
+              remember_last_entry: yes
+            '';
+
+            extraEntries = ''
+              /Windows 11
+                  protocol: efi
+                  path: boot():/EFI/Microsoft/Boot/bootmgfw.efi
+            '';
+
+            style = {
+              wallpapers = [ ];
+            };
           };
         };
 
@@ -82,6 +93,10 @@
       programs.steam = {
         enable = true;
       };
+
+      environment.systemPackages = with pkgs; [
+        sbctl
+      ];
 
       hardware.bluetooth.enable = true;
 

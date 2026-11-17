@@ -162,6 +162,31 @@
                     ];
                   }
                   {
+                    name = "Redes sociais";
+                    bookmarks = [
+                      {
+                        name = "WhatsApp";
+                        url = "https://web.whatsapp.com/";
+                      }
+                      {
+                        name = "Twitter";
+                        url = "https://twitter.com/";
+                      }
+                      {
+                        name = "Instagram";
+                        url = "https://www.instagram.com/";
+                      }
+                      {
+                        name = "Reddit";
+                        url = "https://www.reddit.com/";
+                      }
+                      {
+                        name = "Twitch";
+                        url = "https://www.twitch.tv/";
+                      }
+                    ];
+                  }
+                  {
                     name = "Desenvolvimento";
                     bookmarks = [
                       {

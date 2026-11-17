@@ -100,7 +100,18 @@
       programs.nix-ld.enable = true;
       documentation.nixos.enable = false;
 
-      fonts.packages = with pkgs; [ nerd-fonts.jetbrains-mono ];
+      services.kmscon = {
+        enable = true;
+        hwRender = true;
+        useXkbConfig = true;
+        fonts = [
+          {
+            name = "JetBrainsMono Nerd Font Mono";
+            package = pkgs.nerd-fonts.jetbrains-mono;
+          }
+        ];
+        extraConfig = "font-size=14";
+      };
 
       environment.systemPackages =
         (with pkgs; [
