@@ -138,6 +138,51 @@
         };
       };
 
+      services.dnscrypt-proxy = {
+        enable = true;
+        settings = {
+          listen_addresses = [
+            "127.0.0.1:53"
+            "[::1]:53"
+          ];
+
+          doh_servers = true;
+          dnscrypt_servers = false;
+          server_names = [
+            "quad9-doh-ip4-port443-filter-pri"
+            "quad9-doh-ip6-port443-filter-pri"
+            "quad9-doh-ip4-port5053-filter-pri"
+          ];
+
+          require_dnssec = true;
+          ipv6_servers = true;
+
+          bootstrap_resolvers = [
+            "9.9.9.9:53"
+            "149.112.112.112:53"
+          ];
+          netprobe_address = "9.9.9.9:53";
+
+          cache = true;
+
+          sources.public-resolvers = {
+            urls = [
+              "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
+              "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
+            ];
+            cache_file = "/var/lib/dnscrypt-proxy/public-resolvers.md";
+            minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+          };
+        };
+      };
+
+      networking.nameservers = [
+        "127.0.0.1"
+        "::1"
+      ];
+      networking.networkmanager.dns = "none";
+      services.resolved.enable = false;
+
       networking.firewall.enable = lib.mkDefault true; # Disable the firewall altogether.
       networking.firewall.allowedTCPPorts = [ 22 ];
       # networking.firewall.allowedUDPPorts = [ ... ];
