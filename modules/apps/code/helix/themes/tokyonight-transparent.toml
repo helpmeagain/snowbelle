@@ -1,0 +1,5 @@
+inherits = "tokyonight"
+
+"ui.background" = {}
+
+"ui.statusline" = { fg = "#c8d3f5", bg = "#222436" }
