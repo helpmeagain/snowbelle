@@ -26,8 +26,8 @@
       vscodeName = if isProprietaryVscode then "Visual Studio Code" else "VSCodium";
 
       myExtensions = with pkgs.gnomeExtensions; [
-        # dash-to-dock
-        hot-edge
+        dash-to-dock
+        # hot-edge
         blur-my-shell
         appindicator
         caffeine

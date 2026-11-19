@@ -14,6 +14,12 @@
         description = "Pacotes do conjunto padrão abaixo a não instalar neste host.";
       };
 
+      options.dotfiles.packages = lib.mkOption {
+        type = lib.types.listOf lib.types.package;
+        default = [ ];
+        description = "Pacotes do host; filtrados por excludePackages.";
+      };
+
       config = {
         home.username = "help";
         home.homeDirectory = "/home/help";
@@ -27,7 +33,8 @@
         # release notes.
         home.stateVersion = "26.05"; # Please read the comment before changing.
 
-        home.packages = lib.subtractLists config.dotfiles.excludePackages (
+        home.packages = lib.subtractLists config.dotfiles.excludePackages config.dotfiles.packages;
+        dotfiles.packages =
           (with pkgs; [
             # Utils
             fastfetch
@@ -45,8 +52,7 @@
             ente-auth
           ])
           ++ (with pkgs.unstable; [
-          ])
-        );
+          ]);
 
         home.file = {
           # # Building this configuration will create a copy of 'dotfiles/screenrc' in

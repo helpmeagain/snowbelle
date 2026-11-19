@@ -1,14 +1,5 @@
 {
-  flake.modules.homeManager.base =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
-    {
-      home.packages = with pkgs; [
-        protonup-qt
-      ];
-    };
+  flake.modules.homeManager.base = { pkgs, ... }: {
+    dotfiles.packages = [ pkgs.protonup-qt ];
+  };
 }
